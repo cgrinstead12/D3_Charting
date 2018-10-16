@@ -31,7 +31,7 @@ function xScale(stateData, chosenXAxis) {
     // create scales
     var xLinearScale = d3.scaleLinear()
       .domain([d3.min(stateData, d => d[chosenXAxis]) * 0.8,
-        d3.max(stateData, d => d[chosenXAxis]) * 1.3
+        d3.max(stateData, d => d[chosenXAxis]) * 1.1
       ])
       .range([0, width]);
   
@@ -42,7 +42,7 @@ function xScale(stateData, chosenXAxis) {
     //create scales
     var yLinearScale = d3.scaleLinear()
       .domain([d3.min(stateData, d => d[chosenYAxis]) * 0.8,
-        d3.max(stateData, d => d[chosenYAxis]) * 1.3
+        d3.max(stateData, d => d[chosenYAxis]) * 1.1
       ])
       .range([height, 0])
     return yLinearScale;
