@@ -130,8 +130,6 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   return circlesGroup;
 }
 
-
-
   //TIME TO USE ALL THE FUNCTIONS
   d3.csv("data.csv").then(function(stateData){
         stateData.forEach(function(data){
@@ -244,7 +242,7 @@ labelsXGroup.selectAll("text")
 
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
-            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis,circlesGroup);
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
             if (chosenXAxis === "poverty") {
                 povertyLabel
@@ -293,7 +291,7 @@ labelsYGroup.selectAll("text")
 
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
-            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis,circlesGroup);
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
             
             if (chosenYAxis === "healthcare") {
                 healhcareLabel
