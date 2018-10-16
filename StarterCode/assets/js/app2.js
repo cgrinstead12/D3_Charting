@@ -30,8 +30,8 @@ var chosenYAxis = "healthcare";
 function xScale(stateData, chosenXAxis) {
     // create scales
     var xLinearScale = d3.scaleLinear()
-      .domain([d3.min(stateData, d => d[chosenXAxis]) * 0.7,
-        d3.max(stateData, d => d[chosenXAxis]) * 1.2
+      .domain([d3.min(stateData, d => d[chosenXAxis]) * 0.8,
+        d3.max(stateData, d => d[chosenXAxis]) * 1.3
       ])
       .range([0, width]);
   
@@ -41,8 +41,8 @@ function xScale(stateData, chosenXAxis) {
   function yScale(stateData, chosenYAxis) {
     //create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(stateData, d => d[chosenYAxis]) * 0.7,
-        d3.max(stateData, d => d[chosenYAxis]) * 1.2
+      .domain([d3.min(stateData, d => d[chosenYAxis]) * 0.8,
+        d3.max(stateData, d => d[chosenYAxis]) * 1.3
       ])
       .range([height, 0])
     return yLinearScale;
@@ -111,7 +111,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   }
   
   var toolTip = d3.tip()
-    .attr("class", "tooltip")
+    .attr("class", "d3-tip")
     .offset([80, -100])
     .html(function(d) {
       return (`${labelY} ${d[chosenYAxis]}<br>${labelX} ${d[chosenXAxis]}`);
@@ -120,7 +120,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   circlesGroup.call(toolTip);
 
   circlesGroup.on("mouseover", function(data) {
-    toolTip.show(data);
+    toolTip.show(data, this);
   })
     // onmouseout event
     .on("mouseout", function(data, index) {
@@ -227,7 +227,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         .classed("inactive", true)
         .text("Obese(%)");
       
-        var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+      var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
     
 labelsXGroup.selectAll("text")
         .on("click", function() {
@@ -240,9 +240,10 @@ labelsXGroup.selectAll("text")
             xLinearScale = xScale(stateData, chosenXAxis);
             xAxis = renderXAxes(xLinearScale, xAxis);
 
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
-            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+            
 
             if (chosenXAxis === "poverty") {
                 povertyLabel
@@ -289,9 +290,9 @@ labelsYGroup.selectAll("text")
             yLinearScale = yScale(stateData, chosenYAxis);
             yAxis = renderYAxes(yLinearScale, yAxis);
 
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
-            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
             
             if (chosenYAxis === "healthcare") {
                 healhcareLabel
