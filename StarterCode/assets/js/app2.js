@@ -72,8 +72,8 @@ function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYA
 
     circlesGroup.transition()
       .duration(1000)
-      .attr("cx", d => newXScale(d[chosenXAxis]))
-      .attr("cy", d => newYScale(d[chosenYAxis]));
+      .attr("cx", d => newXScale(d[chosenXAxis]) + 11)
+      .attr("cy", d => newYScale(d[chosenYAxis]) - 5);
   
     return circlesGroup;
   }
@@ -87,6 +87,50 @@ function transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLi
 
     return textBubbles;
 }
+
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+
+  if (chosenXAxis === "poverty") {
+    var labelX = "Poverty:";
+  }
+  else if(chosenXAxis === "age"){
+    var labelX = "Age:";
+  }
+  else if (chosenXAxis === "income"){
+    var labelX = "Income:";
+  }
+
+  if (chosenYAxis === "obesity") {
+    var labelY = "Obesity:";
+  }
+  else if(chosenYAxis === "smokes"){
+    var labelY = "Smokes:";
+  }
+  else if (chosenYAxis === "healthcare"){
+    var labelY = "Healthcare:";
+  }
+  
+  var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([80, -100])
+    .html(function(d) {
+      return (`${labelY} ${d[chosenYAxis]}<br>${labelX} ${d[chosenXAxis]}`);
+    });
+
+  circlesGroup.call(toolTip);
+
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    // onmouseout event
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+  return circlesGroup;
+}
+
+
 
   //TIME TO USE ALL THE FUNCTIONS
   d3.csv("data.csv").then(function(stateData){
@@ -118,8 +162,8 @@ function transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLi
     .data(stateData)
     .enter()
     .append("circle")
-    .attr("cx", d => xLinearScale(d[chosenXAxis]))
-    .attr("cy", d => yLinearScale(d[chosenYAxis]))
+    .attr("cx", d => xLinearScale(d[chosenXAxis]) + 10)
+    .attr("cy", d => yLinearScale(d[chosenYAxis]) - 5)
     .attr("r", 20)
     .attr("fill", "darkblue")
     .attr("opacity", ".5");
@@ -129,7 +173,7 @@ function transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLi
             .enter()
             .append("text")
             .text(d => d.abbr)
-            .attr("x", d => xLinearScale(d[chosenXAxis])*.9)
+            .attr("x", d => xLinearScale(d[chosenXAxis]))
             .attr("y", d => yLinearScale(d[chosenYAxis]));
 
     var labelsXGroup = chartGroup.append("g")
@@ -184,6 +228,8 @@ function transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLi
         .attr("value", "obesity") // value to grab for event listener
         .classed("inactive", true)
         .text("Obese(%)");
+      
+        var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
     
 labelsXGroup.selectAll("text")
         .on("click", function() {
@@ -198,7 +244,8 @@ labelsXGroup.selectAll("text")
 
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
-            
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis,circlesGroup);
+
             if (chosenXAxis === "poverty") {
                 povertyLabel
                   .classed("active", true)
@@ -246,6 +293,7 @@ labelsYGroup.selectAll("text")
 
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
             textBubbles = transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale);
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis,circlesGroup);
             
             if (chosenYAxis === "healthcare") {
                 healhcareLabel
