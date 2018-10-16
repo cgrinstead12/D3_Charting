@@ -52,7 +52,7 @@ function renderXAxes(newXScale, xAxis) {
     var bottomAxis = d3.axisBottom(newXScale);
   
     xAxis.transition()
-      .duration(1000)
+      .duration(1500)
       .call(bottomAxis);
   
     return xAxis;
@@ -62,7 +62,7 @@ function renderYAxes(newYScale, yAxis) {
     var leftAxis = d3.axisLeft(newYScale);
   
     yAxis.transition()
-      .duration(1000)
+      .duration(1500)
       .call(leftAxis);
   
     return yAxis;
@@ -71,7 +71,7 @@ function renderYAxes(newYScale, yAxis) {
 function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
 
     circlesGroup.transition()
-      .duration(1000)
+      .duration(1500)
       .attr("cx", d => newXScale(d[chosenXAxis]) + 11)
       .attr("cy", d => newYScale(d[chosenYAxis]) - 5);
   
@@ -80,7 +80,7 @@ function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYA
 
 function transitionText(textBubbles, chosenXAxis, chosenYAxis, xLinearScale, yLinearScale){
     textBubbles.transition()
-      .duration(1000)
+      .duration(1500)
       .text(stateData => stateData.abbr)
       .attr("x", stateData => xLinearScale(stateData[chosenXAxis]))
       .attr("y", stateData => yLinearScale(stateData[chosenYAxis]));
